@@ -1,19 +1,17 @@
 import http from 'http';
 import { Server } from 'socket.io';
-import app from './app';
-
-const port = process.env.PORT || 5000;
+import app from '../src/app';
 
 // Create HTTP server
 const server = http.createServer(app);
 
-// Socket.IO setup with CORS
 const allowedOrigins = [
   'http://localhost:3000',
   'https://my-bank-bank-management-system-fron.vercel.app',
   'https://my-bank-bank-management-system-frontend-gp0diebm5.vercel.app',
 ];
 
+// Socket.IO setup
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
@@ -22,10 +20,11 @@ const io = new Server(server, {
   },
 });
 
-// Attach Socket.IO to Express app for routes
+// Attach Socket.IO to Express app
 app.set('socketio', io);
 
-// Start server locally
-server.listen(port, () => {
-  console.log(`🚀 Server running on port ${port}`);
-});
+// Export default for Vercel
+export default (req: any, res: any) => {
+  // Let Express handle the request/response
+  return app(req, res);
+};

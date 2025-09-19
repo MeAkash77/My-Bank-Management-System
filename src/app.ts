@@ -1,11 +1,9 @@
-import cors from "cors";
-import express, { Application, NextFunction, Request, Response } from "express";
-import httpStatus from "http-status";
-import routes from "./app/routes";
-import cookieParser from "cookie-parser";
-import globalErrorHandler from "./app/middlewares/globalErrorHandler";
-import http from "http";
-import { Server } from "socket.io";
+import cors from 'cors';
+import express, { Application, NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
+import routes from './app/routes';
+import cookieParser from 'cookie-parser';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
 
 const app: Application = express();
 app.use(cookieParser());
@@ -16,22 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Allowed frontend origins
 const allowedOrigins = [
-  "http://localhost:3000",
-  "https://cholti-bank.vercel.app",
-  "https://my-bank-bank-management-system-frontend-gp0diebm5.vercel.app", // ✅ add your deployed frontend
+  'http://localhost:3000',
+  'https://my-bank-bank-management-system-fron.vercel.app',
+  'https://my-bank-bank-management-system-frontend-gp0diebm5.vercel.app',
 ];
-
-// Create HTTP server
-const server = http.createServer(app);
-
-// Socket.IO setup with CORS
-const io = new Server(server, {
-  cors: {
-    origin: allowedOrigins,
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
 
 // Express CORS setup
 app.use(
@@ -41,24 +27,20 @@ app.use(
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(new Error('Not allowed by CORS'));
       }
     },
     credentials: true,
   })
 );
 
-// Make Socket.IO available in routes
-app.use((req: Request, res: Response, next: NextFunction) => {
-  res.locals.io = io;
-  next();
-});
-
 // API routes
-app.use("/api/v1", routes);
+app.use('/api/v1', routes);
 
-// Attach the Socket.IO instance to the Express app
-app.set("socketio", io);
+// 👇 Add a root route so visiting / shows something
+app.get('/', (req: Request, res: Response) => {
+  res.send('Backend is running 🚀');
+});
 
 // Global error handler
 app.use(globalErrorHandler);
@@ -67,14 +49,14 @@ app.use(globalErrorHandler);
 app.use((req: Request, res: Response) => {
   res.status(httpStatus.NOT_FOUND).json({
     success: false,
-    message: "Not Found",
+    message: 'Not Found',
     errorMessages: [
       {
         path: req.originalUrl,
-        message: "API Not Found",
+        message: 'API Not Found',
       },
     ],
   });
 });
 
-export default server;
+export default app;
