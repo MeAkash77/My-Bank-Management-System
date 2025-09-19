@@ -5,7 +5,7 @@ import app from './app';
 const allowedOrigins = [
   'http://localhost:3000',
   'https://my-bank-bank-management-system-fron.vercel.app',
-  'https://my-bank-bank-management-system-frontend-gp0diebm5.vercel.app',
+  'https://my-bank-management-system-frontent.vercel.app',
 ];
 
 // Create HTTP server
