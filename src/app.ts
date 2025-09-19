@@ -15,6 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 // Allowed frontend origins
 const allowedOrigins = [
   'http://localhost:3000',
+  'https://my-bank-management-system-frontent-ix668idjc-akash-d5052c73.vercel.app',
   'https://my-bank-bank-management-system-fron.vercel.app',
   'https://my-bank-management-system-frontent.vercel.app',
 ];
