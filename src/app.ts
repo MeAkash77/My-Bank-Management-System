@@ -1,74 +1,80 @@
-import cors from 'cors';
-import express, { Application, NextFunction, Request, Response } from 'express';
-import httpStatus from 'http-status';
-
-import routes from './app/routes';
-
-import cookieParser from 'cookie-parser';
-import globalErrorHandler from './app/middlewares/globalErrorHandler';
-
-import http from 'http';
-import { Server } from 'socket.io';
+import cors from "cors";
+import express, { Application, NextFunction, Request, Response } from "express";
+import httpStatus from "http-status";
+import routes from "./app/routes";
+import cookieParser from "cookie-parser";
+import globalErrorHandler from "./app/middlewares/globalErrorHandler";
+import http from "http";
+import { Server } from "socket.io";
 
 const app: Application = express();
 app.use(cookieParser());
-//  parser
+
+// Body parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const server = http.createServer(app);
-
-// Configure CORS
+// Allowed frontend origins
 const allowedOrigins = [
-  'http://localhost:3000',
-  'https://cholti-bank.vercel.app',
+  "http://localhost:3000",
+  "https://cholti-bank.vercel.app",
+  "https://my-bank-bank-management-system-frontend-gp0diebm5.vercel.app", // ✅ add your deployed frontend
 ];
 
+// Create HTTP server
+const server = http.createServer(app);
+
+// Socket.IO setup with CORS
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
+    methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
+// Express CORS setup
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Check if the origin is in the allowed list or is undefined (for same-origin requests)
-      if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      // Allow requests with no origin (like mobile apps, curl, Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true, // Allow credentials (cookies)
+    credentials: true,
   })
 );
 
+// Make Socket.IO available in routes
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.locals.io = io; // Make 'io' accessible in routes
+  res.locals.io = io;
   next();
 });
 
-app.use('/api/v1', routes);
-// Attach the Socket.IO instance to the Express app
-app.set('socketio', io);
+// API routes
+app.use("/api/v1", routes);
 
-//global error handler
+// Attach the Socket.IO instance to the Express app
+app.set("socketio", io);
+
+// Global error handler
 app.use(globalErrorHandler);
 
-//handle not found
-app.use((req: Request, res: Response, next: NextFunction) => {
+// Handle 404 Not Found
+app.use((req: Request, res: Response) => {
   res.status(httpStatus.NOT_FOUND).json({
     success: false,
-    message: 'Not Found',
+    message: "Not Found",
     errorMessages: [
       {
         path: req.originalUrl,
-        message: 'API Not Found',
+        message: "API Not Found",
       },
     ],
   });
-  next();
 });
 
-export default server; // Export the 'server' instance
+export default server;
