@@ -1,16 +1,11 @@
-![Light Mode Logo](https://github.com/ShuvoProgram/CholtiBank/blob/main/public/choltiBank.png?raw=true#gh-light-mode-only)
 
-![Dark Mode Logo](https://github.com/ShuvoProgram/CholtiBank/blob/main/public/choltiBank_dark_1.png?raw=true#gh-dark-mode-only)
+# My Bank - Digital Banking Platform
 
-# CholtiBank - Digital Banking Platform
-
-CholtiBank is the first digital bank in Bangladesh, revolutionizing the banking experience by providing a range of online services that were traditionally confined to physical branches. This project aims to digitize and streamline various banking processes, offering customers the convenience of accessing financial services from the comfort of their homes.
+My Bank is the first digital bank in Bangladesh, revolutionizing the banking experience by providing a range of online services that were traditionally confined to physical branches. This project aims to digitize and streamline various banking processes, offering customers the convenience of accessing financial services from the comfort of their homes.
 
 ## Screenshots
 
 ### Home Page
-
-![Home Page](https://i.ibb.co/rt5rKVC/image.png)
 
 <!-- ### Dashboard
 ![Home Page](https://i.ibb.co/Zh0K9SG/image.png) -->
@@ -249,9 +244,3 @@ CholtiBank is the first digital bank in Bangladesh, revolutionizing the banking 
 | --------- | -------- | -------------------------------------------------------------------------- |
 | Primary   | #ff9100  | ![Primary Color](https://via.placeholder.com/50x30/ff9100/ffffff?text=+)   |
 | Secondary | #04185C  | ![Secondary Color](https://via.placeholder.com/50x30/04185C/ffffff?text=+) |
-
-
-6. **Access the Live Application.**
-
-   Explore the live version of Choltibank [here](https://cholti-bank.vercel.app/).
-
